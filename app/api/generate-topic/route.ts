@@ -82,7 +82,7 @@ export async function POST(request: Request) {
     })
 
     // Generate image if requested (using a placeholder for now)
-    if (generateImage && !isExplanationRequest) {
+    if (generateImage) {
       try {
         // For now, we'll use a placeholder image service
         // You can replace this with actual Fal AI integration later
@@ -90,7 +90,7 @@ export async function POST(request: Request) {
 
         // Using a placeholder image service that generates images based on text
         const encodedPrompt = encodeURIComponent(imagePrompt)
-        imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=800&height=600&seed=${Math.floor(Math.random() * 1000)}`
+        imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=900&height=450&seed=${Math.floor(Math.random() * 1000)}`
 
         console.log("Generated image URL:", imageUrl)
       } catch (imageError) {

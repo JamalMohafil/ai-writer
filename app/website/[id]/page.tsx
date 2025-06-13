@@ -26,6 +26,16 @@ interface Website {
 }
 
 const colors = {
+  default: {
+    bg: "from-slate-900 via-gray-900 to-black",
+    accent: "from-blue-400 to-purple-400",
+    card: "from-blue-500/20 to-purple-500/20",
+  },
+  dark: {
+    bg: "from-black via-gray-950 to-slate-950",
+    accent: "from-gray-300 to-gray-800",
+    card: "from-gray-500/20 to-white/20",
+  },
   green: {
     bg: "from-emerald-900 via-green-900 to-teal-900",
     accent: "from-emerald-400 to-teal-400",
@@ -138,7 +148,7 @@ export default function WebsitePage({ params }: { params: Promise<{ id: string }
     )
   }
 
-  const colorData = colors[website.selectedColor as keyof typeof colors] || colors.blue
+  const colorData = colors[website.selectedColor as keyof typeof colors] || colors.default
 
   return (
     <div className={`min-h-screen bg-gradient-to-br ${colorData.bg} text-white relative overflow-hidden`}>
@@ -260,13 +270,13 @@ export default function WebsitePage({ params }: { params: Promise<{ id: string }
                 <CardContent className="space-y-4 md:space-y-6">
                   {/* Topic Image */}
                   {topic.imageUrl && (
-                    <div className="rounded-2xl overflow-hidden border border-white/20 shadow-2xl">
+                    <div className="rounded-2xl w-max mx-auto overflow-hidden border border-white/20 shadow-2xl">
                       <Image
                         src={topic.imageUrl || "/placeholder.svg"}
                         alt={topic.title}
                         width={800}
                         height={600}
-                        className="w-full h-64 md:h-80 object-contain"
+                        className="w-max  h-auto max-h-[500px] object-contain"
                       />
                     </div>
                   )}

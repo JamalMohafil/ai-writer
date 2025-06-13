@@ -14,6 +14,18 @@ import Image from "next/image"
 
 const colors = [
   {
+    name: "Varsayılan",
+    value: "default",
+    class: "from-slate-900 via-gray-900 to-black",
+    accent: "from-blue-400 to-purple-400",
+  },
+  {
+    name: "Siyah Karanlık",
+    value: "dark",
+    class: "from-black via-gray-950 to-slate-950",
+    accent: "from-gray-300 to-white",
+  },
+  {
     name: "Yeşil",
     value: "green",
     class: "from-emerald-900 via-green-900 to-teal-900",
@@ -347,13 +359,13 @@ export default function HomePage() {
             {imageUrl && (
               <div className="space-y-3">
                 <Label className="text-white font-semibold text-lg">🖼️ Oluşturulan Görsel</Label>
-                <div className="relative rounded-2xl overflow-hidden border border-white/20 shadow-2xl">
+                <div className="relative mx-auto w-max rounded-2xl overflow-hidden border border-white/20 shadow-2xl">
                   <Image
                     src={imageUrl || "/placeholder.svg"}
                     alt="Generated topic image"
                     width={800}
                     height={600}
-                    className="w-full h-auto object-cover"
+                    className="w-max mx-auto max-h-[500px] h-auto object-contain"
                     onError={() => {
                       console.error("Image failed to load:", imageUrl)
                       setImageGenerationError("Görsel yüklenemedi")
@@ -423,13 +435,13 @@ export default function HomePage() {
 
                     {/* Topic Image */}
                     {topic.imageUrl && (
-                      <div className="mt-4 rounded-xl overflow-hidden border border-white/20">
+                      <div className="mt-4 rounded-xl mx-auto w-max overflow-hidden border border-white/20">
                         <Image
                           src={topic.imageUrl || "/placeholder.svg"}
                           alt={topic.title}
                           width={600}
                           height={400}
-                          className="w-full h-48 object-cover"
+                          className="w-max max-h-[500px] h-auto object-contain"
                         />
                       </div>
                     )}
