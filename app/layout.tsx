@@ -75,7 +75,7 @@ export default function RootLayout({
       <head>
         {/* Additional meta tags for better SEO */}
         <meta name="theme-color" content="#1e293b" />
-        <meta name="color-scheme" content="dark light" />
+        <meta name="color-scheme" content="dark" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -120,8 +120,8 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`${inter.className} antialiased`}>
-        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-gray-900 to-black">{children}</div>
+      <body className={`${inter.className} antialiased dark`}>
+        <div className="min-h-screen bg-gradient-to-br  from-slate-900 via-gray-900 to-black">{children}</div>
 
         {/* Analytics scripts can be added here */}
         {/* Google Analytics, etc. */}
