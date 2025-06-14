@@ -85,7 +85,7 @@ export default function HomePage() {
   const [expandedTopic, setExpandedTopic] = useState<string | null>(null)
   const router = useRouter()
   const [imageGenerationError, setImageGenerationError] = useState("")
-
+  const [isLoading, setIsLoading] = useState(false)
   const generateTopic = async () => {
     if (!title.trim()) return
 
@@ -148,7 +148,7 @@ export default function HomePage() {
       alert("Lütfen tüm alanları doldurun ve en az bir konu ekleyin")
       return
     }
-
+    setIsLoading(true)
     try {
       const response = await fetch("/api/create-website", {
         method: "POST",
@@ -161,14 +161,17 @@ export default function HomePage() {
           topics,
         }),
       })
-
+      
       if (!response.ok) throw new Error("Web sitesi oluşturulamadı")
+        
+        const data = await response.json()
+        router.push(`/website/${data.websiteId}`)
+      } catch (error) {
+        console.error("Web sitesi oluşturma hatası:", error)
+        alert("Web sitesi oluşturulurken bir hata oluştu. Lütfen tekrar deneyin.")
+      }finally {
+      setIsLoading(false)
 
-      const data = await response.json()
-      router.push(`/website/${data.websiteId}`)
-    } catch (error) {
-      console.error("Web sitesi oluşturma hatası:", error)
-      alert("Web sitesi oluşturulurken bir hata oluştu. Lütfen tekrar deneyin.")
     }
   }
 
@@ -479,13 +482,17 @@ export default function HomePage() {
           <Card className="bg-black/40 border-white/20 backdrop-blur-xl shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-105 rounded-3xl">
             <CardContent className="pt-8">
               <Button
+              disabled={isLoading}
                 onClick={createWebsite}
                 className="w-full bg-gradient-to-r from-purple-600 via-pink-600 to-red-600 hover:from-purple-700 hover:via-pink-700 hover:to-red-700 hover:scale-105 text-white font-black py-6 text-2xl shadow-2xl transition-all duration-300 rounded-2xl h-20 relative overflow-hidden"
               >
                 <div className="absolute inset-0 bg-white/20 animate-pulse rounded-2xl"></div>
                 <div className="relative z-10 flex items-center justify-center gap-4">
                   <GraduationCap className="h-8 w-8" />
-                  <span>🚀 Web Sitemi Oluştur</span>
+                  {isLoading ? <span>Web Siteni Oluşturuluyor...</span> : (
+
+                    <span>🚀 Web Sitemi Oluştur</span>
+                  )}
                   <Sparkles className="h-8 w-8" />
                 </div>
               </Button>
