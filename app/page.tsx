@@ -359,13 +359,13 @@ export default function HomePage() {
             {imageUrl && (
               <div className="space-y-3">
                 <Label className="text-white font-semibold text-lg">🖼️ Oluşturulan Görsel</Label>
-                <div className="relative mx-auto w-max rounded-2xl overflow-hidden border border-white/20 shadow-2xl">
+                <div className="relative max-w-[100%] mx-auto w-max rounded-2xl overflow-hidden border border-white/20 shadow-2xl">
                   <Image
                     src={imageUrl || "/placeholder.svg"}
                     alt="Generated topic image"
                     width={800}
                     height={600}
-                    className="w-max mx-auto max-h-[500px] h-auto object-contain"
+                    className="w-max mx-auto max-w-[100%] max-h-[500px] h-auto object-contain"
                     onError={() => {
                       console.error("Image failed to load:", imageUrl)
                       setImageGenerationError("Görsel yüklenemedi")
@@ -435,13 +435,13 @@ export default function HomePage() {
 
                     {/* Topic Image */}
                     {topic.imageUrl && (
-                      <div className="mt-4 rounded-xl mx-auto w-max overflow-hidden border border-white/20">
+                      <div className="mt-4 max-w-[100%] rounded-xl mx-auto w-max overflow-hidden border border-white/20">
                         <Image
                           src={topic.imageUrl || "/placeholder.svg"}
                           alt={topic.title}
                           width={600}
                           height={400}
-                          className="w-max max-h-[500px] h-auto object-contain"
+                          className="w-max max-w-[100%] max-h-[500px] h-auto object-contain"
                         />
                       </div>
                     )}

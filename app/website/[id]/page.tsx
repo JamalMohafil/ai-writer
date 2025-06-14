@@ -428,13 +428,13 @@ export default function WebsitePage({ params }: { params: Promise<{ id: string }
                   <CardContent className="space-y-4 md:space-y-6">
                     {/* Topic Image */}
                     {topic.imageUrl && (
-                      <div className="rounded-2xl w-max mx-auto overflow-hidden border border-white/20 shadow-2xl">
+                      <div className="rounded-2xl max-w-[100%] w-max mx-auto overflow-hidden border border-white/20 shadow-2xl">
                         <Image
                           src={topic.imageUrl || "/placeholder.svg"}
                           alt={topic.title}
                           width={800}
                           height={600}
-                          className="w-max h-auto max-h-[500px] object-contain"
+                          className="w-max max-w-[100%] h-auto max-h-[500px] object-contain"
                         />
                       </div>
                     )}
