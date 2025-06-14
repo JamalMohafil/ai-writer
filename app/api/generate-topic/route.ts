@@ -81,9 +81,21 @@ export async function POST(request: Request) {
       prompt: prompt,
     })
 
-    // Generate image if requested (using a placeholder for now)
+    // Generate image if requested (with content filtering)
     if (generateImage) {
       try {
+        // Check for inappropriate content before generating image
+        const isInappropriate = checkInappropriateContent(title)
+
+        if (isInappropriate) {
+          console.log("Image generation blocked: Inappropriate content detected")
+          return Response.json({
+            content: text,
+            imageUrl: null,
+            message: "تم منع إنشاء الصورة بسبب المحتوى غير المناسب",
+          })
+        }
+
         // For now, we'll use a placeholder image service
         // You can replace this with actual Fal AI integration later
         const imagePrompt = createImagePrompt(title, contentType)
@@ -107,6 +119,97 @@ export async function POST(request: Request) {
     console.error("Konu oluşturma hatası:", error)
     return Response.json({ error: "Konu oluşturulamadı" }, { status: 500 })
   }
+}
+
+// Content filtering function to detect inappropriate content
+function checkInappropriateContent(title: string): boolean {
+  const lowerTitle = title.toLowerCase()
+
+  // Arabic inappropriate keywords
+  const arabicInappropriateKeywords = [
+    "جنس",
+    "جنسي",
+    "جنسية",
+    "إباحي",
+    "إباحية",
+    "عاري",
+    "عارية",
+    "عري",
+    "جماع",
+    "نيك",
+    "زنا",
+    "شهوة",
+    "شهواني",
+    "مثير",
+    "مثيرة",
+    "فاحش",
+    "فاحشة",
+    "بورن",
+    "سكس",
+    "عاهرة",
+    "عاهر",
+    "دعارة",
+    "غرام",
+  ]
+
+  // English inappropriate keywords
+  const englishInappropriateKeywords = [
+    "sex",
+    "sexual",
+    "porn",
+    "pornographic",
+    "nude",
+    "naked",
+    "erotic",
+    "adult",
+    "xxx",
+    "nsfw",
+    "explicit",
+    "intimate",
+    "seductive",
+    "sensual",
+    "provocative",
+    "arousing",
+    "lustful",
+    "orgasm",
+    "masturbation",
+    "fetish",
+    "bdsm",
+    "kinky",
+    "horny",
+    "slutty",
+    "whore",
+    "prostitute",
+    "escort",
+  ]
+
+  // Turkish inappropriate keywords
+  const turkishInappropriateKeywords = [
+    "seks",
+    "cinsel",
+    "porno",
+    "pornografik",
+    "çıplak",
+    "erotik",
+    "yetişkin",
+    "müstehcen",
+    "fahişe",
+    "fuhuş",
+    "şehvet",
+    "şehvetli",
+    "tahrik",
+    "azgın",
+  ]
+
+  // Combine all inappropriate keywords
+  const allInappropriateKeywords = [
+    ...arabicInappropriateKeywords,
+    ...englishInappropriateKeywords,
+    ...turkishInappropriateKeywords,
+  ]
+
+  // Check if title contains any inappropriate keywords
+  return allInappropriateKeywords.some((keyword) => lowerTitle.includes(keyword))
 }
 
 function createImagePrompt(title: string, contentType: string): string {
@@ -134,7 +237,10 @@ function createImagePrompt(title: string, contentType: string): string {
       stylePrompt = "in a modern educational style, bright and engaging"
   }
 
-  return `${basePrompt} "${cleanTitle}" ${stylePrompt}, high quality, professional, suitable for educational content, 4K resolution`
+  // Add safety prompt to ensure appropriate content
+  const safetyPrompt = ", family-friendly, educational, appropriate for all ages, no inappropriate content"
+
+  return `${basePrompt} "${cleanTitle}" ${stylePrompt}${safetyPrompt}, high quality, professional, suitable for educational content, 4K resolution`
 }
 
 function detectContentType(title: string): string {
